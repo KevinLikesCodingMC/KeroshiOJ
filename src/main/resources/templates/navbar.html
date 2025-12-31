@@ -1,0 +1,36 @@
+<div th:fragment="navbar">
+	<nav class="navbar navbar-expand-sm keroshi-blue-navbar">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="/" th:text="${oj.name}"></a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#top-bar" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="top-bar">
+				<ul class="navbar-nav me-auto mb-2 mb-sm-0">
+					<li class="nav-item">
+						<a class="nav-link active" aria-current="page" href="/problems">
+							<i class="fa-solid fa-list"></i>
+							<span th:text="#{nav.problems}"></span>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link active" aria-current="page" href="/submissions">
+							<i class="fa-solid fa-list-check"></i>
+							<span th:text="#{nav.submissions}"></span>
+						</a>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+							<i class="fa-solid fa-language"></i>
+							<span th:text="#{nav.language}"></span>
+						</a>
+						<ul class="dropdown-menu keroshi-blue-dropdown-menu">
+							<li><a class="dropdown-item" href="?lang=en">English</a></li>
+							<li><a class="dropdown-item" href="?lang=zh_cn">简体中文</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+</div>

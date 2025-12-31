@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
+import java.util.Map;
+
 @Entity
 @Table(name = "problem")
 public class Problem {
@@ -24,12 +26,32 @@ public class Problem {
 		this.pid = pid;
 	}
 
+	@Column(name = "name")
+	private String name;
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	@JdbcTypeCode(SqlTypes.LONG32VARCHAR)
+	@Column(name = "statement")
 	private String statement;
 	public String getStatement() {
 		return statement;
 	}
 	public void setStatement(String statement) {
 		this.statement = statement;
+	}
+
+	@JdbcTypeCode(SqlTypes.JSON)
+	@Column(name = "info")
+	private Map<String, Object> info;
+	public Map<String, Object> getInfo() {
+		return info;
+	}
+	public void setInfo(Map<String, Object> info) {
+		this.info = info;
 	}
 }

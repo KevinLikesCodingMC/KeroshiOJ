@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<title th:text="#{nav.problems}"></title>
+	<th:block th:replace="~{fragments :: meta}"></th:block>
+	<th:block th:replace="~{fragments :: resources}"></th:block>
+</head>
+<body>
+
+<div th:replace="~{fragments :: header}"></div>
+
+<div class="container p-3">
+	<h2 th:text="#{nav.problems}"></h2>
+	<table class="table">
+		<thead>
+			<tr>
+				<th th:text="#{problem.id}"></th>
+				<th th:text="#{problem.name}"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="problem : ${problems}">
+				<td th:text="${problem.pid}"></td>
+				<td>
+					<a th:href="@{/problem/{id}(id=${problem.id})}"
+					   th:text="${problem.name}"></a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<a href="/problems/new" th:text="#{problem.new}"></a>
+</div>
+
+
+<div th:replace="~{fragments :: footer}"></div>
+
+</body>
+</html>

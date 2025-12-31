@@ -15,10 +15,12 @@ public class AdminConfig implements WebMvcConfigurer {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(adminInterceptor)
-				.addPathPatterns("/admin/**")
+				.addPathPatterns("/**")
 				.excludePathPatterns(
-						"/admin/login",
-						"/admin/login/check"
+						"/error",
+						"/login",
+						"/login/check",
+						"/lib/**"
 				);
 	}
 }

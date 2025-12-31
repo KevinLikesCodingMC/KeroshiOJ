@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<title th:text="#{title.error}"></title>
+	<th:block th:replace="~{fragments :: meta}"></th:block>
+	<th:block th:replace="~{fragments :: resources}"></th:block>
+</head>
+<body>
+
+<div th:replace="~{fragments :: header}"></div>
+
+<div class="container d-flex align-items-center min-vh-80">
+	<div class="row justify-content-center w-100">
+		<div class="col-12 text-start">
+			<h1>
+				<i class="fa-solid fa-triangle-exclamation"></i>
+				<span th:text="#{title.error}"></span>
+			</h1>
+			<h1>
+				<i class="fa-solid fa-circle-exclamation"></i>
+				<span th:text="${status}"></span>
+				<span th:text="${error}"></span>
+			</h1>
+			<h1>
+				<i class="fa-solid fa-clock"></i>
+				<span th:text="${timestamp}"></span>
+			</h1>
+		</div>
+	</div>
+</div>
+
+<div th:replace="~{fragments :: footer}"></div>
+
+</body>
+</html>

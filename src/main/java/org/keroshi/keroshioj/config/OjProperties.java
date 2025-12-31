@@ -11,6 +11,22 @@ import org.springframework.stereotype.Component;
 		"file:oj.properties"
 }, encoding = "UTF-8", ignoreResourceNotFound = true)
 public class OjProperties {
+	private String name;
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	private String lang;
+	public String getLang() {
+		return lang;
+	}
+	public void setLang(String lang) {
+		this.lang = lang;
+	}
+
 	private String dataPath;
 	public String getDataPath() {
 		return dataPath;
@@ -19,12 +35,12 @@ public class OjProperties {
 		this.dataPath = dataPath;
 	}
 
-	private String SuUserName;
-	public String getSuUserName() {
-		return SuUserName;
+	private String SuUsername;
+	public String getSuUsername() {
+		return SuUsername;
 	}
-	public void setSuUserName(String SuUserName) {
-		this.SuUserName = SuUserName;
+	public void setSuUsername(String SuUsername) {
+		this.SuUsername = SuUsername;
 	}
 
 	private String SuPassword;

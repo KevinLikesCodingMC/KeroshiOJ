@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<title></title>
+
+	<th:block th:fragment="meta">
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	</th:block>
+
+	<th:block th:fragment="resources">
+		<link rel="stylesheet" href="/lib/bootstrap-5.3.3/css/bootstrap.min.css">
+		<script src="/lib/bootstrap-5.3.3/js/bootstrap.bundle.min.js"></script>
+
+		<link rel="stylesheet" href="/lib/fontawesome-free-7.1.0-web/css/all.min.css">
+
+		<link rel="stylesheet" href="/lib/katex-0.16.27/katex.min.css">
+		<script src="/lib/katex-0.16.27/katex.min.js"></script>
+		<script src="/lib/katex-0.16.27/contrib/auto-render.min.js"></script>
+
+		<script src="/lib/marked-17.0.1/marked.umd.js"></script>
+
+		<link rel="stylesheet" href="/lib/highlight-11.11.1/styles/arduino-light.min.css">
+		<script src="/lib/highlight-11.11.1/highlight.min.js"></script>
+		<script src="/lib/highlight-11.11.1/languages/cpp.min.js"></script>
+
+		<link rel="stylesheet" href="/lib/keroshi/main.css">
+	</th:block>
+
+</head>
+
+<body>
+
+<div th:fragment="header">
+	<div th:replace="~{navbar :: navbar}"></div>
+</div>
+
+<div th:fragment="footer">
+	<div class="text-center text-muted py-3 border-top">
+		<small th:if="${locale == 'en'}">
+			<span>Powered by</span>
+			<a href="https://github.com/KevinLikesCodingMC/KeroshiOJ">Keroshi OJ</a>
+		</small>
+		<small th:if="${locale == 'zh'}">
+			<span>由</span>
+			<a href="https://github.com/KevinLikesCodingMC/KeroshiOJ">Keroshi OJ</a>
+			<span>驱动</span>
+		</small>
+	</div>
+</div>
+
+</body>
+</html>

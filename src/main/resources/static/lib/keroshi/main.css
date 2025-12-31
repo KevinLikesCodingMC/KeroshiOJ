@@ -1,0 +1,23 @@
+.keroshi-blue-navbar {
+	background-color: rgba(227, 242, 253, 0.500);
+}
+
+.keroshi-blue-dropdown-menu {
+	background-color: rgba(227, 242, 253, 0.500);
+}
+
+.keroshi-blue-dropdown-menu li :hover {
+	background-color: rgba(227, 242, 253, 0.700);
+}
+
+.min-vh-80 {
+	min-height: 80vh;
+}
+
+.keroshi-gray {
+	color: rgba(187, 187, 187, 0.5);
+}
+
+pre code {
+	tab-size: 4;
+}
