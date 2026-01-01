@@ -19,7 +19,7 @@
 	<div id="statement"></div>
 	<input type="hidden" id="statement_md" th:value="${problem.statement}">
 
-	<form th:action="submit" method="post" id="form">
+	<form th:action="@{/problem/{id}/submit(id=${problem.id})}" method="post" id="form">
 		<div id="code"></div><br>
 		<input type="hidden" name="code" id="code_input">
 		<button class="btn btn-primary py-2" type="submit" th:text="#{problem.submit}"></button>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<title th:text="#{nav.submissions}"></title>
+	<th:block th:replace="~{fragments :: meta}"></th:block>
+	<th:block th:replace="~{fragments :: resources}"></th:block>
+</head>
+<body>
+
+<div th:replace="~{fragments :: header}"></div>
+
+<div class="container p-3">
+	<h2 th:text="#{nav.submissions}"></h2>
+	<table class="table">
+		<thead>
+		<tr>
+			<th th:text="#{submission.id}"></th>
+			<th th:text="#{submission.problem}"></th>
+			<th th:text="#{submission.who}"></th>
+			<th th:text="#{submission.verdict}"></th>
+			<th th:text="#{submission.time}"></th>
+			<th th:text="#{submission.mem}"></th>
+			<th th:text="#{submission.when}"></th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr th:each="submission : ${submissions}">
+			<td th:text="${submission.id}"></td>
+			<td>
+				<a th:href="@{/problem/{id}(id=${submission.problem})}">
+					<span th:text="${problemMap[submission.problem]?.pid}"></span>
+					<span th:text="${problemMap[submission.problem]?.name}"></span>
+				</a>
+			</td>
+			<td th:text="${submission.username}"></td>
+			<td><a th:href="@{/submission/{id}(id=${submission.id})}"
+				   class="text-decoration-none fw-bold">
+				<span th:class="${submission.getVerdictColor()}"
+					  th:text="${submission.getVerdictName()}"></span>
+			</a></td>
+			<td th:text="${submission.timeMs}"></td>
+			<td th:text="${submission.memoryKb}"></td>
+			<td th:text="${#temporals.format(submission.submitTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+		</tr>
+		</tbody>
+	</table>
+</div>
+
+
+<div th:replace="~{fragments :: footer}"></div>
+
+</body>
+</html>

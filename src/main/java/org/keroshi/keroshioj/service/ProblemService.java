@@ -10,5 +10,24 @@ public interface ProblemService {
 
 	Optional<Problem> getProblemById(long id);
 
+	List<Problem> getProblemsByIds(List<Long> ids);
+
 	List<Problem> getAllProblems();
+
+	List<TestCasePair> getTestCases(long id);
+
+	class TestCasePair {
+		private final String inPath;
+		private final String ansPath;
+		public TestCasePair(String inPath, String ansPath) {
+			this.inPath = inPath;
+			this.ansPath = ansPath;
+		}
+		public String getInPath() {
+			return inPath;
+		}
+		public String getAnsPath() {
+			return ansPath;
+		}
+	}
 }

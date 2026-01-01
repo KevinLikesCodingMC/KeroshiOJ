@@ -12,8 +12,8 @@ public class Problem {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private long id;
-	public long getId() {
+	private Long id;
+	public Long getId() {
 		return id;
 	}
 
