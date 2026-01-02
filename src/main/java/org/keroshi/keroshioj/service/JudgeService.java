@@ -6,6 +6,5 @@ import org.springframework.transaction.annotation.Transactional;
 public interface JudgeService {
 
 	@Async("judgeExecutor")
-	@Transactional
 	void executeJudge(long id);
 }

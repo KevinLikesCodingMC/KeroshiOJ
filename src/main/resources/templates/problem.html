@@ -4,71 +4,49 @@
 	<title th:text="${problem.pid}"></title>
 	<th:block th:replace="~{fragments :: meta}"></th:block>
 	<th:block th:replace="~{fragments :: resources}"></th:block>
+
+	<link rel="stylesheet" href="/lib/codemirror-5.65.20/lib/codemirror.css">
+	<script src="/lib/codemirror-5.65.20/lib/codemirror.js"></script>
+	<script src="/lib/codemirror-5.65.20/mode/clike.js"></script>
+
 </head>
 <body>
 
 <div th:replace="~{fragments :: header}"></div>
 
 <div class="container p-3">
-	<h2 class="text-center">
+	<h1 class="text-center">
 		<span th:text="${problem.pid}"></span>
-		<span>.</span>
 		<span th:text="${problem.name}"></span>
-	</h2>
+	</h1>
+
+	<a th:href="@{/problem/{id}/edit(id=${problem.id})}">编辑题目</a>
+
 	<hr>
 	<div id="statement"></div>
 	<input type="hidden" id="statement_md" th:value="${problem.statement}">
 
-	<form th:action="@{/problem/{id}/submit(id=${problem.id})}" method="post" id="form">
-		<div id="code"></div><br>
-		<input type="hidden" name="code" id="code_input">
+	<h2>提交代码</h2>
+	<form th:action="@{/problem/{id}/submit(id=${problem.id})}" method="post">
+		<textarea name="code" id="code"></textarea><br>
 		<button class="btn btn-primary py-2" type="submit" th:text="#{problem.submit}"></button>
 	</form>
 </div>
 
 <div th:replace="~{fragments :: footer}"></div>
 
-<script src="/lib/codemirror6/codemirror.umd.js"></script>
-
 <script>
 	let statement_md = document.getElementById('statement_md').value;
-	statement_md = statement_md.replace(/\$\$([\s\S]*?)\$\$/g, (match, formula) => {
-		try {
-			return katex.renderToString(formula.trim(), {
-				displayMode: true,
-				throwOnError: false
-			});
-		} catch (e) {
-			return match;
-		}
-	});
-	statement_md = statement_md.replace(/(?<!\\)\$([^$\n]+?)\$(?!\\)/g, (match, formula) => {
-		try {
-			return katex.renderToString(formula.trim(), {
-				displayMode: false,
-				throwOnError: false
-			});
-		} catch (e) {
-			return match;
-		}
-	});
-	document.getElementById('statement').innerHTML = marked.parse(statement_md);
+	document.getElementById('statement').innerHTML = marked.parse(renderMath(statement_md));
 
-	const editor = new CodeMirror.EditorView({
-		extensions: [
-			CodeMirror.basicSetup,
-			CodeMirror.cpp(),
-			CodeMirror.foldGutter(),
-			CodeMirror.syntaxHighlighting(CodeMirror.defaultHighlightStyle),
-			CodeMirror.ayuLight,
-			CodeMirror.keymap.of([CodeMirror.indentWithTab]),
-		],
-		parent: document.getElementById('code'),
-	});
-
-	const form = document.getElementById('form');
-	form.addEventListener('submit', function (e) {
-		code_input.value = editor.state.doc.toString();
+	var cppEditor = CodeMirror.fromTextArea(document.getElementById("code"), {
+		lineNumbers: true,
+		mode: "text/x-c++src",
+		matchBrackets: true,
+		indentUnit: 4,
+		tabSize: 4,
+		indentWithTabs: true,
+		lineWrapping: false,
 	});
 </script>
 

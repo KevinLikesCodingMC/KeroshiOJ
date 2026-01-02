@@ -40,7 +40,9 @@
 			</a></td>
 			<td th:text="${submission.timeMs}"></td>
 			<td th:text="${submission.memoryKb}"></td>
-			<td th:text="${#temporals.format(submission.submitTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+			<td class="small text-secondary"
+				th:text="${#temporals.format(submission.submitTime, 'yyyy-MM-dd HH:mm:ss')}">
+			</td>
 		</tr>
 		</tbody>
 	</table>

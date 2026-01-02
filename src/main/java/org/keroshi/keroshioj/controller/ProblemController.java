@@ -72,4 +72,27 @@ public class ProblemController {
 
 		return "redirect:/submissions";
 	}
+
+	@RequestMapping("/problem/{id}/edit")
+	public String problemEdit(@PathVariable long id, Model model) {
+		Optional<Problem> problem = problemService.getProblemById(id);
+		if (problem.isEmpty()) {
+			return "redirect:/problems";
+		}
+		model.addAttribute("problem", problem.get());
+		return "problem_edit";
+	}
+
+	@RequestMapping("/problem/{id}/edit/submit")
+	public String problemEditSubmit(@PathVariable long id, @RequestParam Map<String,Object> map) {
+		Optional<Problem> problem = problemService.getProblemById(id);
+		if (problem.isEmpty()) {
+			return "redirect:/problems";
+		}
+		problem.get().setPid((String) map.get("pid"));
+		problem.get().setName((String) map.get("name"));
+		problem.get().setStatement((String) map.get("statement"));
+		problemService.saveProblem(problem.get());
+		return "redirect:/problem/" + id;
+	}
 }

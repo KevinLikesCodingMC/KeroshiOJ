@@ -84,6 +84,7 @@ public class Submission {
 		this.memoryKb = memoryKb;
 	}
 
+	@JdbcTypeCode(SqlTypes.LONG32VARCHAR)
 	@Column(name = "compile_log")
 	private String compileLog;
 	public String getCompileLog() {

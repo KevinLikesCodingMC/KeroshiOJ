@@ -3,10 +3,8 @@ package org.keroshi.keroshioj.service;
 import org.keroshi.keroshioj.config.OjProperties;
 import org.keroshi.keroshioj.domain.JudgeDetail;
 import org.keroshi.keroshioj.domain.Submission;
-import org.keroshi.keroshioj.mapper.SubmissionRepository;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -18,24 +16,24 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class JudgeServiceImpl implements JudgeService {
-	private final SubmissionRepository submissionRepository;
+	private final SubmissionService submissionService;
 	private final ProblemService problemService;
 	private final OjProperties ojProperties;
-	public JudgeServiceImpl(SubmissionRepository submissionRepository,
+	public JudgeServiceImpl(SubmissionService submissionService,
 							ProblemService problemService,
 							OjProperties ojProperties) {
-		this.submissionRepository = submissionRepository;
+		this.submissionService = submissionService;
 		this.problemService = problemService;
 		this.ojProperties = ojProperties;
 	}
 
 	@Async("judgeExecutor")
-	@Transactional
 	@Override
 	public void executeJudge(long id) {
-		Submission sub = submissionRepository.findById(id).orElseThrow();
-		sub.setStatus(8);
-		submissionRepository.save(sub);
+		Submission submission = submissionService.getSubmissionById(id).orElseThrow();
+		submission.setStatus(8);
+		submission.getDetails().clear();
+		submissionService.saveSubmission(submission);
 
 		String workDirPath = ojProperties.getDataPath() + File.separator + "temp" + File.separator + id;
 		File workDir = new File(workDirPath);
@@ -45,18 +43,18 @@ public class JudgeServiceImpl implements JudgeService {
 		int maxMem = - 1;
 
 		try {
-			String userBin = compile(sub, workDirPath);
+			String userBin = compile(submission, workDirPath);
 			if (userBin == null) {
-				submissionRepository.save(sub);
+				submissionService.saveSubmission(submission);
 				return;
 			}
 
 			List<ProblemService.TestCasePair> cases =
-					problemService.getTestCases(sub.getProblem());
+					problemService.getTestCases(submission.getProblem());
 			if (cases.isEmpty()) {
-				sub.setStatus(6);
-				sub.setCompileLog("System Error: No test cases found.");
-				submissionRepository.save(sub);
+				submission.setStatus(6);
+				submission.setCompileLog("System Error: No test cases found.");
+				submissionService.saveSubmission(submission);
 				return;
 			}
 
@@ -64,48 +62,47 @@ public class JudgeServiceImpl implements JudgeService {
 
 			for (ProblemService.TestCasePair cp : cases) {
 				JudgeDetail detail = runSingleTest(userBin, cp);
-				sub.getDetails().add(detail);
+				submission.getDetails().add(detail);
 
 				maxTime = Math.max(maxTime, detail.getTimeMs());
 				maxMem = Math.max(maxMem, detail.getMemoryKb());
 
 				if (detail.getStatus() != 0) {
-					sub.setStatus(detail.getStatus());
+					submission.setStatus(detail.getStatus());
 					failed = true;
 					break;
 				}
-				sub.setTimeMs(maxTime);
-				sub.setMemoryKb(maxMem);
-				submissionRepository.save(sub);
+//				submission.setTimeMs(maxTime);
+//				submission.setMemoryKb(maxMem);
+//				submissionService.saveSubmission(submission);
 			}
-
 			if (! failed) {
-				sub.setStatus(0);
+				submission.setStatus(0);
 			}
 		} catch (Exception e) {
-			sub.setStatus(6);
-			sub.setCompileLog("System Error: " + e.getMessage());
+			submission.setStatus(6);
+			submission.setCompileLog("System Error: " + e.getMessage());
 		} finally {
-			sub.setTimeMs(maxTime);
-			sub.setMemoryKb(maxMem);
-			submissionRepository.save(sub);
+			submission.setTimeMs(maxTime);
+			submission.setMemoryKb(maxMem);
+			submissionService.saveSubmission(submission);
 		}
 	}
 
-	private String compile(Submission sub, String workDir) throws Exception {
+	private String compile(Submission submission, String workDir) throws Exception {
 		String sourcePath = workDir + File.separator + "main.cpp";
 		String binPath = workDir + File.separator + "main";
-		Files.writeString(Path.of(sourcePath), sub.getCode());
+		Files.writeString(Path.of(sourcePath), submission.getCode());
 		ProcessBuilder pb = new ProcessBuilder("g++", sourcePath, "-o", binPath, "-O2", "-std=c++14");
 		pb.redirectErrorStream(true);
 		Process p = pb.start();
 		String output = new String(p.getInputStream().readAllBytes());
 		boolean finished = p.waitFor(20, TimeUnit.SECONDS);
 		boolean success = finished && p.exitValue() == 0;
-		sub.setCompileLog(output);
+		submission.setCompileLog(output);
 		if (! success) {
 			if (! finished) p.destroyForcibly();
-			sub.setStatus(5);
+			submission.setStatus(5);
 			return null;
 		}
 		return binPath;

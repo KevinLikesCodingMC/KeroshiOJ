@@ -1,3 +1,4 @@
 /mvnw text eol=lf
 *.cmd text eol=crlf
 **/testlib.h linguist-vendored
+src/main/resources/static/lib/codemirror-5.65.20/** linguist-vendored
