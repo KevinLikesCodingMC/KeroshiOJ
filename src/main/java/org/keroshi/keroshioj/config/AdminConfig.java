@@ -20,7 +20,8 @@ public class AdminConfig implements WebMvcConfigurer {
 						"/error",
 						"/login",
 						"/login/check",
-						"/lib/**"
+						"/lib/**",
+						"/img/**"
 				);
 	}
 }

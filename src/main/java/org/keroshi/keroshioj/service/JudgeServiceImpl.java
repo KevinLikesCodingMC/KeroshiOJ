@@ -117,8 +117,8 @@ public class JudgeServiceImpl implements JudgeService {
 				userBin,
 				cp.getInPath(),
 				cp.getAnsPath(),
-				"1000",
-				"256",
+				"2000",
+				"512",
 				ncmpPath
 		);
 

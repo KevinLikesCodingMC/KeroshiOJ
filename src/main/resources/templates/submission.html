@@ -6,9 +6,11 @@
 	<th:block th:replace="~{fragments :: resources}"></th:block>
 
 	<style>
-		.hljs {
-			background-color: rgba(240, 250, 255, 0.25);
-			border-radius: 5px;
+		.card {
+			overflow: hidden !important;
+		}
+		.card-header {
+			border-bottom: none;
 		}
 	</style>
 
@@ -18,11 +20,80 @@
 <div th:replace="~{fragments :: header}"></div>
 
 <div class="container p-3">
-	<h2>提交记录 #<span th:text="${submission.id}"></span></h2>
+	<h2>
+		<span th:text="#{nav.submission}"></span>
+		#<span th:text="${submission.id}"></span>
+	</h2>
+
+	<table class="table text-center table-borderless">
+		<thead>
+		<tr>
+			<th th:text="#{submission.id}"></th>
+			<th th:text="#{submission.problem}"></th>
+			<th th:text="#{submission.who}"></th>
+			<th th:text="#{submission.verdict}"></th>
+			<th th:text="#{submission.time}"></th>
+			<th th:text="#{submission.mem}"></th>
+			<th th:text="#{submission.when}"></th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr>
+			<td th:text="${submission.id}"></td>
+			<td>
+				<a th:href="@{/problem/{id}(id=${problem.id})}">
+					<span th:text="${problem.pid}"></span>
+					<span th:text="${problem.name}"></span>
+				</a>
+			</td>
+			<td th:text="${submission.username}"></td>
+			<td class="fw-bold">
+				<span th:class="${submission.getVerdictColor()}"
+					  th:text="${submission.getVerdictName()}"></span>
+			</td>
+			<td>
+				<span th:text="${submission.timeMs}"></span>ms
+			</td>
+			<td>
+				<span th:text="${submission.memoryKb}"></span>kb
+			</td>
+			<td class="small text-secondary"
+				th:text="${#temporals.format(submission.submitTime, 'yyyy-MM-dd HH:mm:ss')}">
+			</td>
+		</tr>
+		</tbody>
+	</table>
+
 	<pre><code class="language-cpp hljs" th:text="${submission.code}"></code></pre>
 	<div th:if="${submission.compileLog != null and !#strings.isEmpty(submission.compileLog)}">
-		<h3>编译信息</h3>
+		<h3 th:text="#{submission.compile}"></h3>
 		<pre><code class="hljs" th:text="${submission.compileLog}"></code></pre>
+	</div>
+
+	<div th:if="${submission.details.size() > 0}" class="mt-4">
+		<h3 th:text="#{submission.detail}"></h3>
+		<div th:each="detail, status : ${submission.details}" class="mb-2">
+			<div class="card mb-3"
+				 th:classappend="${detail.getVerdictColor()}">
+				<div class="card-header cursor-pointer py-3"
+					 data-bs-toggle="collapse"
+					 th:data-bs-target="'#detail-' + ${status.index}">
+					<div class="row align-items-center">
+						<div class="col-sm-3 fw-bold"><h5 class="mb-0">Test #<span th:text="${status.count}"></span>:</h5></div>
+						<div class="col-sm-3" th:text="${detail.getVerdictName()}"></div>
+						<div class="col-sm-3">Time: <span th:text="${detail.timeMs}">0</span>ms</div>
+						<div class="col-sm-3">Memory: <span th:text="${detail.memoryKb}">0</span>kb</div>
+					</div>
+				</div>
+
+				<div th:id="'detail-' + ${status.index}" class="collapse">
+					<div class="card-body bg-light text-dark">
+						<h6 class="fw-bold">Result:</h6>
+						<pre class="bg-white p-2 border rounded"><code th:text="${detail.message}"></code></pre>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 

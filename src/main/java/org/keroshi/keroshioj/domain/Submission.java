@@ -111,8 +111,7 @@ public class Submission {
 	public String getVerdictName() {
 		return Verdict.fromCode(this.status).getName();
 	}
-
 	public String getVerdictColor() {
-		return Verdict.fromCode(this.status).getColorClass();
+		return Verdict.fromCode(this.status).getSubColor();
 	}
 }

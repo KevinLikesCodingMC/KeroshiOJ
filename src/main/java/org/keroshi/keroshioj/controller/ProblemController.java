@@ -93,6 +93,6 @@ public class ProblemController {
 		problem.get().setName((String) map.get("name"));
 		problem.get().setStatement((String) map.get("statement"));
 		problemService.saveProblem(problem.get());
-		return "redirect:/problem/" + id;
+		return "redirect:/problem/" + id + "/edit";
 	}
 }

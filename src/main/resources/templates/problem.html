@@ -20,13 +20,18 @@
 		<span th:text="${problem.name}"></span>
 	</h1>
 
-	<a th:href="@{/problem/{id}/edit(id=${problem.id})}">编辑题目</a>
+	<a th:href="@{/problem/{id}/edit(id=${problem.id})}"
+	   th:text="#{problem.edit}"
+	></a>
 
 	<hr>
 	<div id="statement"></div>
 	<input type="hidden" id="statement_md" th:value="${problem.statement}">
 
-	<h2>提交代码</h2>
+	<hr>
+	<h3 th:text="#{problem.submit_code}"></h3>
+	<pre><code>g++ -O2 -std=c++14</code></pre>
+
 	<form th:action="@{/problem/{id}/submit(id=${problem.id})}" method="post">
 		<textarea name="code" id="code"></textarea><br>
 		<button class="btn btn-primary py-2" type="submit" th:text="#{problem.submit}"></button>

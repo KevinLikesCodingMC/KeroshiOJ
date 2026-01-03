@@ -2,6 +2,8 @@ package org.keroshi.keroshioj.service;
 
 import org.keroshi.keroshioj.domain.Submission;
 import org.keroshi.keroshioj.mapper.SubmissionRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,5 +29,10 @@ public class SubmissionServiceImpl implements SubmissionService {
 	@Override
 	public List<Submission> getAllSubmissions() {
 		return submissionRepository.findAll();
+	}
+
+	@Override
+	public Page<Submission> getSubmissionByPage(Pageable page) {
+		return  submissionRepository.findAll(page);
 	}
 }

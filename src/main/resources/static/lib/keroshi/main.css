@@ -14,10 +14,153 @@
 	min-height: 80vh;
 }
 
-.keroshi-gray {
-	color: rgba(187, 187, 187, 0.5);
+.keroshi-page-link {
+	background-color: rgba(240, 250, 255, 0.5);
+}
+.active > .keroshi-page-link {
+	background-color: rgba(13, 110, 253, 0.7);
+	border-color: rgba(13, 110, 253, 0);
+}
+.disabled > .keroshi-page-link {
+	background-color: rgba(230, 240, 255, 0.7);
+	color: rgba(5, 50, 200, 0.7);
 }
 
+.hljs {
+	background-color: rgba(240, 250, 255, 0.25);
+	border-radius: 5px;
+}
 pre code {
 	tab-size: 4;
+}
+
+.v-ac {
+	color: #00ee00;
+	text-decoration: none;
+}
+.v-ac:hover {
+	color: #2bff4f;
+	text-decoration: underline #2bff4f solid 3px;
+}
+
+.v-wa {
+	color: #dd0000;
+	text-decoration: none;
+}
+.v-wa:hover {
+	color: #ff0000;
+	text-decoration: underline #ff0000 solid 3px;
+}
+
+.v-ml {
+	color: #dd0000;
+	text-decoration: none;
+}
+.v-ml:hover {
+	color: #ff0000;
+	text-decoration: underline #ff0000 solid 3px;
+}
+
+.v-tl {
+	color: #e6e61e;
+	text-decoration: none;
+}
+.v-tl:hover {
+	color: #ffff2b;
+	text-decoration: underline #ffff2b solid 3px;
+}
+
+.v-re {
+	color: #8e44ad;
+	text-decoration: none;
+}
+.v-re:hover {
+	color: #9b59b6;
+	text-decoration: underline #9b59b6 solid 3px;
+}
+
+.v-ce {
+	color: #6c757d;
+	text-decoration: none;
+}
+.v-ce:hover {
+	color: #adb5bd;
+	text-decoration: underline #adb5bd solid 3px;
+}
+
+.v-se {
+	color: #2c3e50;
+	text-decoration: none;
+}
+.v-se:hover {
+	color: #34495e;
+	text-decoration: underline #34495e solid 3px;
+}
+
+.v-waiting {
+	color: lightslategray;
+	text-decoration: none;
+}
+
+.v-judging {
+	color: deepskyblue;
+	text-decoration: none;
+}
+
+.vd-ac {
+	background-color: #00ee00;
+	border-color: #2bff4f;
+}
+.vd-ac:hover {
+	background-color: #2bff4f;
+}
+
+.vd-wa {
+	background-color: #dd0000;
+}
+.vd-wa:hover {
+	background-color: #ff0000;
+}
+
+.vd-ml {
+	background-color: #dd0000;
+}
+.vd-ml:hover {
+	background-color: #ff0000;
+}
+
+.vd-tl {
+	background-color: #e6e61e;
+}
+.vd-tl:hover {
+	background-color: #ffff2b;
+}
+
+.vd-re {
+	background-color: #8e44ad;
+}
+.vd-re:hover {
+	background-color: #9b59b6;
+}
+
+.vd-ce {
+	background-color: #6c757d;
+}
+.vd-ce:hover {
+	background-color: #adb5bd;
+}
+
+.vd-se {
+	background-color: #2c3e50;
+}
+.vd-se:hover {
+	background-color: #34495e;
+}
+
+.vd-waiting {
+	background-color: lightslategray;
+}
+
+.vd-judging {
+	background-color: deepskyblue;
 }

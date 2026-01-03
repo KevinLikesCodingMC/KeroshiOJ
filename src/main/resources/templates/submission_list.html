@@ -11,7 +11,38 @@
 
 <div class="container p-3">
 	<h2 th:text="#{nav.submissions}"></h2>
-	<table class="table">
+
+	<nav th:if="${totalPages > 0}">
+		<ul class="pagination">
+			<li class="page-item" th:classappend="${currentPage == 0} ? 'disabled' : ''">
+				<a class="page-link keroshi-page-link"
+				   th:href="@{/submissions(page=${currentPage - 1}, size=${pageSize})}"
+				   th:text="#{list.prev}"
+				></a>
+			</li>
+			<th:block th:with="
+            	startPage = ${T(java.lang.Math).max(0, currentPage - 5)},
+            	endPage = ${T(java.lang.Math).min(totalPages - 1, currentPage + 5)}
+        	">
+				<li th:each="i : ${#numbers.sequence(startPage, endPage)}"
+					class="page-item"
+					th:classappend="${i == currentPage} ? 'active' : ''">
+					<a class="page-link keroshi-page-link"
+					   th:href="@{/submissions(page=${i}, size=${pageSize})}"
+					   th:text="${i + 1}">
+					</a>
+				</li>
+			</th:block>
+			<li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled' : ''">
+				<a class="page-link keroshi-page-link"
+				   th:href="@{/submissions(page=${currentPage + 1}, size=${pageSize})}"
+				   th:text="#{list.next}"
+				></a>
+			</li>
+		</ul>
+	</nav>
+	
+	<table class="table text-center table-borderless">
 		<thead>
 		<tr>
 			<th th:text="#{submission.id}"></th>
@@ -34,12 +65,16 @@
 			</td>
 			<td th:text="${submission.username}"></td>
 			<td><a th:href="@{/submission/{id}(id=${submission.id})}"
-				   class="text-decoration-none fw-bold">
+				   class="fw-bold text-decoration-none">
 				<span th:class="${submission.getVerdictColor()}"
 					  th:text="${submission.getVerdictName()}"></span>
 			</a></td>
-			<td th:text="${submission.timeMs}"></td>
-			<td th:text="${submission.memoryKb}"></td>
+			<td>
+				<span th:text="${submission.timeMs}"></span>ms
+			</td>
+			<td>
+				<span th:text="${submission.memoryKb}"></span>kb
+			</td>
 			<td class="small text-secondary"
 				th:text="${#temporals.format(submission.submitTime, 'yyyy-MM-dd HH:mm:ss')}">
 			</td>

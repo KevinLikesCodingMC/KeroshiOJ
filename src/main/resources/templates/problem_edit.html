@@ -26,15 +26,17 @@
 		<span th:text="${problem.pid}"></span>
 		<span th:text="${problem.name}"></span>
 	</h1>
-	<a th:href="@{/problem/{id}(id=${problem.id})}">返回题目</a>
+	<a th:href="@{/problem/{id}(id=${problem.id})}"
+		th:text="#{problem.return}"
+	></a>
 	<hr>
-	<h2>编辑题目</h2>
+	<h2 th:text="#{problem.edit}"></h2>
 	<form th:action="@{/problem/{id}/edit/submit(id=${problem.id})}" method="post">
-		<h3>题目编号</h3>
+		<h3 th:text="#{problem.edit_id}"></h3>
 		<input th:value="${problem.pid}" type="text" class="form-control" name="pid" onkeydown="if (event.keyCode===13){ return false; }"><br>
-		<h3>题目名称</h3>
+		<h3 th:text="#{problem.edit_name}"></h3>
 		<input th:value="${problem.name}" type="text" class="form-control" name="name" onkeydown="if (event.keyCode===13){ return false; }"><br>
-		<h3>题目描述</h3>
+		<h3 th:text="#{problem.edit_statement}"></h3>
 		<textarea th:text="${problem.statement}" name="statement" id="statement"></textarea><br>
 		<button class="btn btn-primary py-2" type="submit" th:text="#{problem.submit}"></button>
 	</form>

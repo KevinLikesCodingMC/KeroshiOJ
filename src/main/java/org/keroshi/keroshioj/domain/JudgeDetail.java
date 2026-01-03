@@ -52,4 +52,11 @@ public class JudgeDetail {
 		this.memoryKb = memoryKb;
 		this.message = message;
 	}
+
+	public String getVerdictName() {
+		return Verdict.fromCode(this.status).getFullname();
+	}
+	public String getVerdictColor() {
+		return Verdict.fromCode(this.status).getDetColor();
+	}
 }
