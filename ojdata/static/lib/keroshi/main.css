@@ -197,3 +197,28 @@ input[type="text"], input[type="password"] {
 	backdrop-filter: blur(10px);
 	-webkit-backdrop-filter: blur(10px);
 }
+
+.keroshi-tag-container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px;
+	justify-content: center;
+}
+.keroshi-badge {
+	display: inline-flex;
+	align-items: center;
+	background-color: rgba(240, 250, 255, 0.08);
+	color: dodgerblue;
+	padding: 2px 8px;
+	border-radius: 3px;
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0.1px;
+
+	backdrop-filter: blur(4px);
+	-webkit-backdrop-filter: blur(4px);
+
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	transition: all 0.2s ease;
+	white-space: nowrap;
+}

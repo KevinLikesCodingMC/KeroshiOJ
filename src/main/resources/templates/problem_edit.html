@@ -38,6 +38,8 @@
 		<input th:value="${problem.name}" type="text" class="form-control" name="name" onkeydown="if (event.keyCode===13){ return false; }"><br>
 		<h3 th:text="#{problem.edit_statement}"></h3>
 		<textarea th:text="${problem.statement}" name="statement" id="statement"></textarea><br>
+		<h3 th:text="#{problem.edit_tag}"></h3>
+		<textarea th:text="${infoJson}" name="info" id="info"></textarea><br>
 		<button class="btn btn-primary py-2" type="submit" th:text="#{problem.submit}"></button>
 	</form>
 </div>
@@ -47,6 +49,15 @@
 <script>
 	var markdownEditor = CodeMirror.fromTextArea(document.getElementById("statement"), {
 		mode: "ojMarkdown",
+		lineNumbers: true,
+		matchBrackets: true,
+		indentUnit: 4,
+		tabSize: 4,
+		indentWithTabs: true,
+		lineWrapping: false,
+	});
+	var jsonEditor = CodeMirror.fromTextArea(document.getElementById("info"), {
+		mode: "application/json",
 		lineNumbers: true,
 		matchBrackets: true,
 		indentUnit: 4,

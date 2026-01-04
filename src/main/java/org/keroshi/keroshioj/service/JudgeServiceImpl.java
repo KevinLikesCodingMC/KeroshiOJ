@@ -2,6 +2,8 @@ package org.keroshi.keroshioj.service;
 
 import org.keroshi.keroshioj.config.OjProperties;
 import org.keroshi.keroshioj.domain.JudgeDetail;
+import org.keroshi.keroshioj.domain.Problem;
+import org.keroshi.keroshioj.domain.ProblemConfig;
 import org.keroshi.keroshioj.domain.Submission;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,7 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -49,6 +52,43 @@ public class JudgeServiceImpl implements JudgeService {
 				return;
 			}
 
+			long pid = submission.getProblem();
+			Problem problem = problemService.getProblemById(pid).orElseThrow();
+			Map<String, ProblemConfig> info = problem.getInfo();
+
+			String[] requiredKeys = {"tl", "ml", "judger", "checker"};
+			for (String key : requiredKeys) {
+				if (info == null || ! info.containsKey(key)) {
+					submission.setStatus(6);
+					submission.setCompileLog("System Error: Missing required config field: " + key);
+					return;
+				}
+				if (info.get(key).getValue() == null) {
+					submission.setStatus(6);
+					submission.setCompileLog("System Error: Config field [" + key + "] has no value");
+					return;
+				}
+			}
+			int timeLimit = Integer.parseInt(info.get("tl").getValue().toString());
+			int memoryLimit = Integer.parseInt(info.get("ml").getValue().toString());
+			String testcaseName = info.get("judger").getValue().toString();
+			String checkerName = info.get("checker").getValue().toString();
+
+			String testcasePath = ojProperties.getDataPath() + File.separator + "bin" + File.separator + testcaseName;
+			String checkerPath = ojProperties.getDataPath() + File.separator + "bin" + File.separator + checkerName;
+			File testcaseFile = new File(testcasePath);
+			File checkerFile = new File(checkerPath);
+			if (! testcaseFile.exists()) {
+				submission.setStatus(6);
+				submission.setCompileLog("System Error: testcase binary not found at " + testcasePath);
+				return;
+			}
+			if (! checkerFile.exists()) {
+				submission.setStatus(6);
+				submission.setCompileLog("System Error: ncmp tool not found at " + checkerPath);
+				return;
+			}
+
 			List<ProblemService.TestCasePair> cases =
 					problemService.getTestCases(submission.getProblem());
 			if (cases.isEmpty()) {
@@ -61,9 +101,16 @@ public class JudgeServiceImpl implements JudgeService {
 			boolean failed = false;
 
 			for (ProblemService.TestCasePair cp : cases) {
-				JudgeDetail detail = runSingleTest(userBin, cp);
-				submission.getDetails().add(detail);
+				JudgeDetail detail = runSingleTest(
+						userBin,
+						cp,
+						timeLimit,
+						memoryLimit,
+						testcasePath,
+						checkerPath
+				);
 
+				submission.getDetails().add(detail);
 				maxTime = Math.max(maxTime, detail.getTimeMs());
 				maxMem = Math.max(maxMem, detail.getMemoryKb());
 
@@ -108,18 +155,22 @@ public class JudgeServiceImpl implements JudgeService {
 		return binPath;
 	}
 
-	private JudgeDetail runSingleTest(String userBin, ProblemService.TestCasePair cp) throws Exception {
-		String testcasePath = ojProperties.getDataPath() + File.separator + "bin" + File.separator + "testcase";
-		String ncmpPath = ojProperties.getDataPath() + File.separator + "bin" + File.separator + "ncmp";
-
+	private JudgeDetail runSingleTest(
+			String userBin,
+			ProblemService.TestCasePair cp,
+			int timeLimit,
+			int memoryLimit,
+			String testcasePath,
+			String checkerPath
+	) throws Exception {
 		ProcessBuilder pb = new ProcessBuilder(
 				testcasePath,
 				userBin,
 				cp.getInPath(),
 				cp.getAnsPath(),
-				"2000",
-				"512",
-				ncmpPath
+				String.valueOf(timeLimit),
+				String.valueOf(memoryLimit),
+				checkerPath
 		);
 
 		Process p = pb.start();

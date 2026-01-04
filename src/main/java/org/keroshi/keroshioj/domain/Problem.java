@@ -47,11 +47,11 @@ public class Problem {
 
 	@JdbcTypeCode(SqlTypes.JSON)
 	@Column(name = "info")
-	private Map<String, Object> info;
-	public Map<String, Object> getInfo() {
+	private Map<String, ProblemConfig> info;
+	public Map<String, ProblemConfig> getInfo() {
 		return info;
 	}
-	public void setInfo(Map<String, Object> info) {
+	public void setInfo(Map<String, ProblemConfig> info) {
 		this.info = info;
 	}
 }

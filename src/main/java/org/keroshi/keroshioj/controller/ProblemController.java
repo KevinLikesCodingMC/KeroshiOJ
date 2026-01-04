@@ -1,6 +1,10 @@
 package org.keroshi.keroshioj.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.keroshi.keroshioj.domain.Problem;
+import org.keroshi.keroshioj.domain.ProblemConfig;
 import org.keroshi.keroshioj.domain.Submission;
 import org.keroshi.keroshioj.service.JudgeService;
 import org.keroshi.keroshioj.service.ProblemService;
@@ -11,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -40,6 +45,12 @@ public class ProblemController {
 		Problem problem = new Problem();
 		problem.setPid("P0");
 		problem.setName("New Problem");
+		Map<String, ProblemConfig> infoMap = new HashMap<>();
+		infoMap.put("tl", new ProblemConfig(2000, true));
+		infoMap.put("ml", new ProblemConfig(512, true));
+		infoMap.put("judger", new ProblemConfig("testcase", false));
+		infoMap.put("checker", new ProblemConfig("ncmp", false));
+		problem.setInfo(infoMap);
 		problemService.saveProblem(problem);
 		return "redirect:/problems";
 	}
@@ -80,6 +91,13 @@ public class ProblemController {
 			return "redirect:/problems";
 		}
 		model.addAttribute("problem", problem.get());
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(problem.get().getInfo());
+			model.addAttribute("infoJson", json);
+		} catch (JsonProcessingException e) {
+			model.addAttribute("infoJson", "{}"); // 出错时给个默认大括号
+		}
 		return "problem_edit";
 	}
 
@@ -92,6 +110,16 @@ public class ProblemController {
 		problem.get().setPid((String) map.get("pid"));
 		problem.get().setName((String) map.get("name"));
 		problem.get().setStatement((String) map.get("statement"));
+
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, ProblemConfig> newInfo = mapper.readValue((String) map.get("info"),
+					new TypeReference<Map<String, ProblemConfig>> () {});
+			problem.get().setInfo(newInfo);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+
 		problemService.saveProblem(problem.get());
 		return "redirect:/problem/" + id + "/edit";
 	}

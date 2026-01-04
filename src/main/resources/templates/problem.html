@@ -20,6 +20,15 @@
 		<span th:text="${problem.name}"></span>
 	</h1>
 
+	<div class="keroshi-tag-container">
+		<th:block th:each="info : ${problem.info}">
+        <span th:if="${info.value.visible}"
+			  class="keroshi-badge"
+			  th:text="${info.value.getFormattedValue(info.key)}">
+        </span>
+		</th:block>
+	</div>
+
 	<a th:href="@{/problem/{id}/edit(id=${problem.id})}"
 	   th:text="#{problem.edit}"
 	></a>
