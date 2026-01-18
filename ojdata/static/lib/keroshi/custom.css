@@ -1,0 +1,65 @@
+.keroshi-blue-navbar {
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+}
+
+.hljs {
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+}
+
+body {
+	background: url("/koj/img/wallpaper.jpeg");
+	background-size: cover;
+	background-attachment: fixed;
+}
+
+.table {
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+}
+table, th, td, thead, tbody{
+	background-color: rgba(240, 250, 255, 0.08) !important;
+}
+
+.CodeMirror {
+	border: 1px solid #ddd;
+	background-color: rgba(255, 255, 255, 0.25) !important;
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+}
+
+hr {
+	color: rgba(240, 250, 255, 0.08);
+}
+
+input[type="text"], input[type="password"] {
+	background-color: rgba(255, 255, 255, 0.25) !important;
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+}
+
+.keroshi-tag-container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px;
+	justify-content: center;
+}
+.keroshi-badge {
+	display: inline-flex;
+	align-items: center;
+	background-color: rgba(240, 250, 255, 0.08);
+	color: dodgerblue;
+	padding: 2px 8px;
+	border-radius: 3px;
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0.1px;
+
+	backdrop-filter: blur(4px);
+	-webkit-backdrop-filter: blur(4px);
+
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	transition: all 0.2s ease;
+	white-space: nowrap;
+}

@@ -30,7 +30,7 @@
 <div th:replace="~{fragments :: header}"></div>
 
 <main class="form-signin w-100 m-auto min-vh-80 d-flex align-items-center">
-	<form class="w-100" action="/login/check" method="post">
+	<form class="w-100" th:action="@{/login/check}" method="post">
 		<h1 class="h3 mb-3 fw-normal" th:text="#{admin.login}"></h1>
 		<div class="form-floating">
 			<input type="text" class="form-control" id="floatingInput" placeholder="Username" name="username">

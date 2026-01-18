@@ -63,11 +63,21 @@ public class ProblemServiceImpl implements ProblemService {
 		for (File inFile : inFiles) {
 			String fileName = inFile.getName();
 			String baseName = fileName.substring(0, fileName.lastIndexOf(".in"));
+
 			File ansFile = new File(dir, baseName + ".ans");
-			if (! ansFile.exists()) continue;
+			File outFile = new File(dir, baseName + ".out");
+
+			File targetFile = null;
+			if (ansFile.exists()) {
+				targetFile = ansFile;
+			} else if (outFile.exists()) {
+				targetFile = outFile;
+			}
+
+			if (targetFile == null) continue;
 			testCasePairs.add(new TestCasePair(
 					inFile.getAbsolutePath(),
-					ansFile.getAbsolutePath()
+					targetFile.getAbsolutePath()
 			));
 		}
 		return testCasePairs;

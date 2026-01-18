@@ -85,7 +85,7 @@ public class JudgeServiceImpl implements JudgeService {
 			}
 			if (! checkerFile.exists()) {
 				submission.setStatus(6);
-				submission.setCompileLog("System Error: ncmp tool not found at " + checkerPath);
+				submission.setCompileLog("System Error: checker not found at " + checkerPath);
 				return;
 			}
 
