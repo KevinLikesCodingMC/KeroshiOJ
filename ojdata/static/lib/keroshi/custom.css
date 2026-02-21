@@ -9,7 +9,7 @@
 }
 
 body {
-	background: url("/koj/img/wallpaper.jpeg");
+	background: url("/img/wallpaper.jpeg");
 	background-size: cover;
 	background-attachment: fixed;
 }

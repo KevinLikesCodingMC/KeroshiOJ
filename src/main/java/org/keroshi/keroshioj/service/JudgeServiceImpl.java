@@ -80,13 +80,27 @@ public class JudgeServiceImpl implements JudgeService {
 			File checkerFile = new File(checkerPath);
 			if (! testcaseFile.exists()) {
 				submission.setStatus(6);
-				submission.setCompileLog("System Error: testcase binary not found at " + testcasePath);
+				submission.setCompileLog("System Error: Testcase binary not found at " + testcasePath);
 				return;
+			}
+			if (! testcaseFile.canExecute()) {
+				if (! testcaseFile.setExecutable(true)) {
+					submission.setStatus(6);
+					submission.setCompileLog("System Error: Failed to set executable permission for " + testcasePath);
+					return;
+				}
 			}
 			if (! checkerFile.exists()) {
 				submission.setStatus(6);
-				submission.setCompileLog("System Error: checker not found at " + checkerPath);
+				submission.setCompileLog("System Error: Checker not found at " + checkerPath);
 				return;
+			}
+			if (! checkerFile.canExecute()) {
+				if (! checkerFile.setExecutable(true)) {
+					submission.setStatus(6);
+					submission.setCompileLog("System Error: Failed to set executable permission for " + checkerPath);
+					return;
+				}
 			}
 
 			List<ProblemService.TestCasePair> cases =

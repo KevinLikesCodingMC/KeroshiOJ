@@ -44,6 +44,8 @@ Result run_task(
 		setrlimit(RLIMIT_CPU, & rl);
 		rl.rlim_cur = rl.rlim_max = (rlim_t) (mem_limit_mb + 10) * 1024 * 1024;
 		setrlimit(RLIMIT_AS, & rl);
+		rl.rlim_cur = rl.rlim_max = (rlim_t) (mem_limit_mb + 10) * 1024 * 1024;
+		setrlimit(RLIMIT_STACK, & rl);
 		rl.rlim_cur = rl.rlim_max = 64 * 1024 * 1024;
 		setrlimit(RLIMIT_FSIZE, & rl);
 
@@ -70,15 +72,16 @@ Result run_task(
 		
 		if (WIFSIGNALED(status)) {
 			int sig = WTERMSIG(status);
-			if (sig == SIGXCPU || sig == SIGALRM) {
+			if (sig == SIGXCPU || sig == SIGALRM
+				|| (sig == SIGKILL && res.time_ms >= time_limit_ms - 10)) {
 				res.status = TLE;
-			}
-			else if (sig == SIGXFSZ) {
-				res.status = RE;
 			}
 			else if (sig == SIGKILL || sig == SIGSEGV) {
 				if (res.memory_kb >= mem_limit_mb * 1024 - 1024) res.status = MLE;
 				else res.status = RE;
+			}
+			else if (sig == SIGXFSZ) {
+				res.status = RE;
 			}
 			else {
 				res.status = RE;
